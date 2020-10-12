@@ -21,10 +21,10 @@ t_ignore = ' \t\n'
 
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    raise SyntaxError
 
 
-lexer = lex.lex()
+
 
 
 def p_def(p):
@@ -105,6 +105,10 @@ def p_error(p):
 
 
 def to_parse(string):
+    try:
+        lexer = lex.lex()
+    except SyntaxError:
+            return f'\n'
     parser = yacc.yacc()
     lexemes = string.split('.')
     for i in range(len(lexemes) - 1):
